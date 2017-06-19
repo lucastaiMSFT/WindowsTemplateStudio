@@ -14,7 +14,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
+using EnvDTE;
+using Microsoft.VisualStudio.Shell.Interop;
 
 using Microsoft.TemplateEngine.Edge.Template;
 using Microsoft.Templates.Core;
@@ -24,6 +25,7 @@ using Microsoft.Templates.Core.PostActions;
 using Microsoft.Templates.UI.Views;
 using Microsoft.Templates.UI.Resources;
 using Microsoft.VisualStudio.TemplateWizard;
+using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.Templates.UI
 {
@@ -63,7 +65,7 @@ namespace Microsoft.Templates.UI
             return null;
         }
 
-        public static async Task GenerateAsync(UserSelection userSelection)
+        public static async System.Threading.Tasks.Task GenerateAsync(UserSelection userSelection)
         {
             try
             {
@@ -79,7 +81,7 @@ namespace Microsoft.Templates.UI
             }
         }
 
-        public static async Task UnsafeGenerateAsync(UserSelection userSelection)
+        public static async System.Threading.Tasks.Task UnsafeGenerateAsync(UserSelection userSelection)
         {
             var genItems = GenComposer.Compose(userSelection).ToList();
             var chrono = Stopwatch.StartNew();
@@ -178,6 +180,7 @@ namespace Microsoft.Templates.UI
                 int pagesAdded = genItems.Where(t => t.Template.GetTemplateType() == TemplateType.Page).Count();
                 int featuresAdded = genItems.Where(t => t.Template.GetTemplateType() == TemplateType.Feature).Count();
 
+
                 foreach (var genInfo in genItems)
                 {
                     if (genInfo.Template == null)
@@ -186,11 +189,11 @@ namespace Microsoft.Templates.UI
                     }
 
                     string resultsKey = $"{genInfo.Template.Identity}_{genInfo.Name}";
-
                     if (genInfo.Template.GetTemplateType() == TemplateType.Project)
                     {
-                        AppHealth.Current.Telemetry.TrackProjectGenAsync(genInfo.Template, 
-                            appFx, genResults[resultsKey], pagesAdded, featuresAdded, timeSpent).FireAndForget();
+                        string projectID = GenPostActions.GetPostGenProjectID();
+                        AppHealth.Current.Telemetry.TrackProjectGenAsync(genInfo.Template,
+                            appFx, genResults[resultsKey], projectID, pagesAdded, featuresAdded, timeSpent).FireAndForget();
                     }
                     else
                     {
@@ -203,5 +206,6 @@ namespace Microsoft.Templates.UI
                 AppHealth.Current.Exception.TrackAsync(ex, "Exception tracking telemetry for Template Generation.").FireAndForget();
             }
         }
+
     }
 }

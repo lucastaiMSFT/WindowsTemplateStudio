@@ -67,13 +67,16 @@ namespace Microsoft.Templates.Core.Diagnostics
             await TelemetryService.Current.TrackEventAsync(TelemetryEvents.Wizard, properties).ConfigureAwait(false);
         }
 
-        public async Task TrackProjectGenAsync(ITemplateInfo template, string appFx, TemplateCreationResult result, int? pagesCount = null, int? featuresCount = null, double? timeSpent = null)
+        public async Task TrackProjectGenAsync(ITemplateInfo template, string appFx, TemplateCreationResult result, string projectID, int? pagesCount = null, int? featuresCount = null, double? timeSpent = null)
         {
             if (template == null)
                 throw new ArgumentNullException("template");
 
             if (result == null)
                 throw new ArgumentNullException("result");
+
+            if (projectID == null)
+                throw new ArgumentNullException("projectID");
 
             if (template.GetTemplateType() != TemplateType.Project)
             {
@@ -82,7 +85,7 @@ namespace Microsoft.Templates.Core.Diagnostics
 
             GenStatusEnum telemetryStatus = result.Status == CreationResultStatus.Success ? GenStatusEnum.Completed : GenStatusEnum.Error;
 
-            await TrackProjectAsync(telemetryStatus, template.Name, template.GetProjectType(), appFx, pagesCount, featuresCount, timeSpent, result.Status, result.Message);
+            await TrackProjectAsync(telemetryStatus, template.Name, template.GetProjectType(), appFx, projectID, pagesCount, featuresCount, timeSpent, result.Status, result.Message);
         }
 
         public async Task TrackItemGenAsync(ITemplateInfo template, string appFx, TemplateCreationResult result)
@@ -109,11 +112,12 @@ namespace Microsoft.Templates.Core.Diagnostics
             }
         }
 
-        private async Task TrackProjectAsync(GenStatusEnum status, string templateName, string appType, string appFx, int? pagesCount = null, int? featuresCount = null, double? timeSpent = null, CreationResultStatus genStatus = CreationResultStatus.Success, string message = "")
+        private async Task TrackProjectAsync(GenStatusEnum status, string templateName, string appType, string appFx, string projectID, int? pagesCount = null, int? featuresCount = null, double? timeSpent = null, CreationResultStatus genStatus = CreationResultStatus.Success, string message = "")
         {
             Dictionary<string, string> properties = new Dictionary<string, string>()
             {
                 { TelemetryProperties.Status, status.ToString() },
+                { TelemetryProperties.ProjectID, projectID },
                 { TelemetryProperties.ProjectType, appType },
                 { TelemetryProperties.Framework, appFx },
                 { TelemetryProperties.TemplateName, templateName },

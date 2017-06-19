@@ -129,6 +129,7 @@
     <Compile Include="Locations\UnitTestTemplatesSource.cs" />
     <Compile Include="NamingTest.cs" />
     <Compile Include="Composition\CompositionQueryTest.cs" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Locations\MsSigned\Templates.mstx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
