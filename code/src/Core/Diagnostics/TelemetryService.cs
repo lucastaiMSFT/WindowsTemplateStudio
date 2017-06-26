@@ -61,14 +61,6 @@ namespace Microsoft.Templates.Core.Diagnostics
 
         public async Task TrackEventAsync(string eventName, Dictionary<string, string> properties = null, Dictionary<string, double> metrics = null)
         {
-            if (properties != null)
-            {
-                AppHealth.Current.Error.TrackAsync($"AI-EVENT: NAME: {eventName}" ).FireAndForget();
-                foreach(string s in properties.Keys) {
-                    AppHealth.Current.Error.TrackAsync($"AI-EVENT: NAME: {eventName} KEY: {s} VAL: {properties[s]}").FireAndForget();
-                }
-            }
-            AppHealth.Current.Error.TrackAsync($"AI-EVENT: NAME: {eventName} SENDING WITH UniqueID {_client.InstrumentationKey}").FireAndForget();
             await SafeExecuteAsync(() => _client.TrackEvent(eventName, properties, metrics)).ConfigureAwait(false);
         }
 

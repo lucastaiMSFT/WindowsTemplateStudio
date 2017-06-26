@@ -180,6 +180,12 @@ namespace Microsoft.Templates.UI
                 int pagesAdded = genItems.Where(t => t.Template.GetTemplateType() == TemplateType.Page).Count();
                 int featuresAdded = genItems.Where(t => t.Template.GetTemplateType() == TemplateType.Feature).Count();
 
+                // get projID. On failure, report an empty GUID
+                string projectID = GenPostActions.GetPostGenProjectID();
+                if (projectID == null)
+                {
+                    projectID = Guid.Empty.ToString();
+                }
 
                 foreach (var genInfo in genItems)
                 {
@@ -191,13 +197,12 @@ namespace Microsoft.Templates.UI
                     string resultsKey = $"{genInfo.Template.Identity}_{genInfo.Name}";
                     if (genInfo.Template.GetTemplateType() == TemplateType.Project)
                     {
-                        string projectID = GenPostActions.GetPostGenProjectID();
                         AppHealth.Current.Telemetry.TrackProjectGenAsync(genInfo.Template,
                             appFx, genResults[resultsKey], projectID, pagesAdded, featuresAdded, timeSpent).FireAndForget();
                     }
                     else
                     {
-                        AppHealth.Current.Telemetry.TrackItemGenAsync(genInfo.Template, appFx, genResults[resultsKey]).FireAndForget();
+                        AppHealth.Current.Telemetry.TrackItemGenAsync(genInfo.Template, appFx, genResults[resultsKey], projectID).FireAndForget();
                     }
                 }
             }
