@@ -61,6 +61,14 @@ namespace Microsoft.Templates.Core.Diagnostics
 
         public async Task TrackEventAsync(string eventName, Dictionary<string, string> properties = null, Dictionary<string, double> metrics = null)
         {
+            if (properties != null)
+            {
+                AppHealth.Current.Error.TrackAsync($"AI-EVENT: NAME: {eventName}" ).FireAndForget();
+                foreach(string s in properties.Keys) {
+                    AppHealth.Current.Error.TrackAsync($"AI-EVENT: NAME: {eventName} KEY: {s} VAL: {properties[s]}").FireAndForget();
+                }
+            }
+            AppHealth.Current.Error.TrackAsync($"AI-EVENT: NAME: {eventName} SENDING WITH UniqueID {_client.InstrumentationKey}").FireAndForget();
             await SafeExecuteAsync(() => _client.TrackEvent(eventName, properties, metrics)).ConfigureAwait(false);
         }
 
@@ -103,6 +111,13 @@ namespace Microsoft.Templates.Core.Diagnostics
 
                 if (RemoteKeyAvailable())
                 {
+
+                    // Allow data to get to vortex
+                    TelemetryConfiguration.Active.DisableTelemetry = false;
+                    TelemetryConfiguration.Active.TelemetryChannel.EndpointAddress = "https://vortex.data.microsoft.com/collect/v1";
+                    TelemetryConfiguration.Active.InstrumentationKey = _currentConfig.RemoteTelemetryKey;
+                    _client = new TelemetryClient();
+
                     SetSessionData();
 
                     _client.TrackEvent(TelemetryEvents.SessionStart);
@@ -110,6 +125,7 @@ namespace Microsoft.Templates.Core.Diagnostics
                     IsEnabled = true;
 #if DEBUG
                     TelemetryConfiguration.Active.TelemetryChannel.DeveloperMode = true;
+
 #endif
                 }
                 else
@@ -237,7 +253,10 @@ namespace Microsoft.Templates.Core.Diagnostics
 
         private bool RemoteKeyAvailable()
         {
-            return Guid.TryParse(_currentConfig.RemoteTelemetryKey, out var aux);
+            // Returns true if a valid AI key or MS Internal tagged AI key exists
+            bool validGuid = Guid.TryParse(_currentConfig.RemoteTelemetryKey, out var auxA);
+            bool taggedGuid = Guid.TryParse(_currentConfig.RemoteTelemetryKey.Substring(4), out var auxB);
+            return validGuid || taggedGuid;
         }
 
         private static string GetVersion()

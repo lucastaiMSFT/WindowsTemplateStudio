@@ -1,7 +1,7 @@
 {
   "Environment": "LocalVsix",
   "CdnUrl": "https://wtsrepository.blob.core.windows.net/dev/Latest",
-  "RemoteTelemetryKey": "d2623579-9da7-4fa7-b2bd-5149d202f558",
+  "RemoteTelemetryKey": "AIF-d2623579-9da7-4fa7-b2bd-5149d202f558",
   "LogFileFolderPath": "WindowsTemplateStudio\\Logs",
   "RepositoryFolderName": "WindowsTemplateStudio",
   "DiagnosticsTraceLevel": "Verbose",
