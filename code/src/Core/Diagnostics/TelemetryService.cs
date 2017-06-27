@@ -104,6 +104,7 @@ namespace Microsoft.Templates.Core.Diagnostics
 
                 if (VsTelemetryIsOptedIn() && RemoteKeyAvailable())
                 {
+                    TelemetryConfiguration.Active.TelemetryChannel.EndpointAddress = "https://vortex.data.microsoft.com/collect/v1";
                     SetSessionData();
 
                     _client.TrackEvent(TelemetryEvents.SessionStart);
@@ -315,7 +316,10 @@ namespace Microsoft.Templates.Core.Diagnostics
 
         private bool RemoteKeyAvailable()
         {
-            return Guid.TryParse(_currentConfig.RemoteTelemetryKey, out var aux);
+            // Returns true if a valid AI key or tagged AI key exists
+            bool validGuid = Guid.TryParse(_currentConfig.RemoteTelemetryKey, out var auxA);
+            bool taggedGuid = Guid.TryParse(_currentConfig.RemoteTelemetryKey.Substring(4), out var auxB);
+            return validGuid || taggedGuid;
         }
 
         private static string GetVersion()
