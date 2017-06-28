@@ -104,7 +104,11 @@ namespace Microsoft.Templates.Core.Diagnostics
 
                 if (VsTelemetryIsOptedIn() && RemoteKeyAvailable())
                 {
-                    TelemetryConfiguration.Active.TelemetryChannel.EndpointAddress = "https://vortex.data.microsoft.com/collect/v1";
+                    if (!string.IsNullOrEmpty(_currentConfig.CustomTelemetryEndpoint))
+                    {
+                        TelemetryConfiguration.Active.TelemetryChannel.EndpointAddress = _currentConfig.CustomTelemetryEndpoint;
+                    }
+
                     SetSessionData();
 
                     _client.TrackEvent(TelemetryEvents.SessionStart);
