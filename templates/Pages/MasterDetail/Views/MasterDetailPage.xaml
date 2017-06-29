@@ -10,7 +10,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     mc:Ignorable="d">
     <Page.Resources>
-        <DataTemplate x:Key="MasterListViewItemTemplate" x:DataType="model:Order">
+        <DataTemplate x:Key="MasterListViewItemTemplate" x:DataType="model:SampleModel">
             <Grid Margin="{StaticResource MediumLeftTopRightBottomMargin}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -18,12 +18,12 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock 
-                    Text="{x:Bind OrderId}" 
+                    Text="{x:Bind Title}" 
                     Style="{StaticResource ListTitleStyle}" />
 
                 <TextBlock
                     Grid.Row="1"
-                    Text="{x:Bind Company}"
+                    Text="{x:Bind Description}"
                     Style="{StaticResource ListSubTitleStyle}" />
             </Grid>
         </DataTemplate>

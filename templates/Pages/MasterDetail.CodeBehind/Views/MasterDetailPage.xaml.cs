@@ -9,14 +9,14 @@ namespace Param_ItemNamespace.Views
 {
     public sealed partial class MasterDetailPage : Page, System.ComponentModel.INotifyPropertyChanged
     {
-        private Order _selected;
-        public Order Selected
+        private SampleModel _selected;
+        public SampleModel Selected
         {
             get { return _selected; }
             set { Set(ref _selected, value); }
         }
 
-        public ObservableCollection<Order> SampleItems { get; private set; } = new ObservableCollection<Order>();
+        public ObservableCollection<SampleModel> SampleItems { get; private set; } = new ObservableCollection<SampleModel>();
 
         public MasterDetailPage()
         {
@@ -38,7 +38,7 @@ namespace Param_ItemNamespace.Views
 
         private void MasterListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var item = e?.ClickedItem as Order;
+            var item = e?.ClickedItem as SampleModel;
             if (item != null)
             {
                 if (WindowStates.CurrentState == NarrowState)

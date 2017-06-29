@@ -24,6 +24,7 @@ namespace Microsoft.Templates.Core.Test.Composition
 
         public string Identity { get; set; }
         public string Name { get; set; }
+        //public IReadOnlyDictionary<string, string> Tags => _tags;
         public IReadOnlyDictionary<string, ICacheTag> Tags => _tags;
         public string GroupIdentity { get; set; }
 
@@ -33,38 +34,38 @@ namespace Microsoft.Templates.Core.Test.Composition
             _tags.Add(key, cacheTag);
         }
 
-        public string Author => String.Empty;
+        public string Author => throw new NotImplementedException();
 
-        public string Description => String.Empty;
+        public string Description => throw new NotImplementedException();
 
-        public IReadOnlyList<string> Classifications => null;
+        public IReadOnlyList<string> Classifications => throw new NotImplementedException();
 
-        public string DefaultName => String.Empty;
+        public string DefaultName => throw new NotImplementedException();
 
-        public Guid GeneratorId => Guid.Empty;
+        public Guid GeneratorId => throw new NotImplementedException();
 
-        public string ShortName => String.Empty;
+        public string ShortName => throw new NotImplementedException();
 
-        public Guid ConfigMountPointId => Guid.Empty;
+        public Guid ConfigMountPointId => throw new NotImplementedException();
 
-        public string ConfigPlace => String.Empty;
+        public string ConfigPlace => throw new NotImplementedException();
 
-        public Guid LocaleConfigMountPointId => Guid.Empty;
+        public Guid LocaleConfigMountPointId => throw new NotImplementedException();
 
-        public string LocaleConfigPlace => String.Empty;
+        public string LocaleConfigPlace => throw new NotImplementedException();
 
-        public int Precedence => -1;
-            
-        public IReadOnlyDictionary<string, ICacheParameter> CacheParameters => null;
+        public int Precedence => throw new NotImplementedException();
 
-        public IReadOnlyList<ITemplateParameter> Parameters => null;
+        public IReadOnlyDictionary<string, ICacheParameter> CacheParameters => throw new NotImplementedException();
 
-        public Guid HostConfigMountPointId => Guid.Empty;
+        public IReadOnlyList<ITemplateParameter> Parameters => throw new NotImplementedException();
 
-        public string HostConfigPlace => String.Empty;
+        public Guid HostConfigMountPointId => throw new NotImplementedException();
 
-        public string ThirdPartyNotices => String.Empty;
+        public string HostConfigPlace => throw new NotImplementedException();
 
-        public IReadOnlyDictionary<string, IBaselineInfo> BaselineInfo => null;
+        public string ThirdPartyNotices => throw new NotImplementedException();
+
+        public IReadOnlyDictionary<string, IBaselineInfo> BaselineInfo => throw new NotImplementedException();
     }
 }

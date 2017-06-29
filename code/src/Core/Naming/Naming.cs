@@ -45,6 +45,8 @@ namespace Microsoft.Templates.Core
             throw new Exception("Unable to infer a name. Too much iterations");
         }
 
+
+
         public static ValidationResult Validate(string value, IEnumerable<Validator> validators)
         {
             if (string.IsNullOrEmpty(value))
@@ -106,4 +108,6 @@ namespace Microsoft.Templates.Core
             return result.ToString();
         }
     }
+
+
 }

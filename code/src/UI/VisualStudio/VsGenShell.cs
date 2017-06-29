@@ -28,7 +28,6 @@ using Microsoft.VisualStudio.TemplateWizard;
 using Microsoft.Templates.UI.Resources;
 
 using NuGet.VisualStudio;
-using Microsoft.VisualStudio;
 
 namespace Microsoft.Templates.UI.VisualStudio
 {
@@ -80,9 +79,9 @@ namespace Microsoft.Templates.UI.VisualStudio
                     Dte.Solution.AddFromFile(path);
                 }
             }
-            catch (Exception)
+            catch(Exception)
             {
-                // WE GET AN EXCEPTION WHEN THERE ISN'T A PROJECT LOADED
+                //WE GET AN EXCEPTION WHEN THERE ISN'T A PROJECT LOADED
                 AppHealth.Current.Info.TrackAsync(StringRes.UnableToRefreshProject).FireAndForget();
             }
         }
@@ -115,7 +114,7 @@ namespace Microsoft.Templates.UI.VisualStudio
             }
             catch (Exception)
             {
-                // WE GET AN EXCEPTION WHEN THERE ISN'T A SOLUTION LOADED
+                //WE GET AN EXCEPTION WHEN THERE ISN'T A SOLUTION LOADED
                 AppHealth.Current.Info.TrackAsync(StringRes.UnableAddProjectToSolution).FireAndForget();
             }
         }
@@ -171,8 +170,10 @@ namespace Microsoft.Templates.UI.VisualStudio
 
         public override void ShowModal(System.Windows.Window dialog)
         {
-            // get the owner of this dialog
-            UIShell.GetDialogOwnerHwnd(out IntPtr hwnd);
+            //get the owner of this dialog
+            IntPtr hwnd;
+
+            UIShell.GetDialogOwnerHwnd(out hwnd);
 
             dialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
 
@@ -261,7 +262,7 @@ namespace Microsoft.Templates.UI.VisualStudio
             }
             catch (Exception)
             {
-                // WE GET AN EXCEPTION WHEN THERE ISN'T A PROJECT LOADED
+                //WE GET AN EXCEPTION WHEN THERE ISN'T A PROJECT LOADED
             }
 
             return p;
@@ -269,7 +270,7 @@ namespace Microsoft.Templates.UI.VisualStudio
 
         private async System.Threading.Tasks.Task ShowTaskListAsync()
         {
-            // JAVIERS: DELAY THIS EXECUTION TO OPEN THE WINDOW AFTER EVERYTHING IS LOADED
+            //JAVIERS: DELAY THIS EXECUTION TO OPEN THE WINDOW AFTER EVERYTHING IS LOADED
             await System.Threading.Tasks.Task.Delay(1000);
 
             var window = Dte.Windows.Item(EnvDTE.Constants.vsWindowKindTaskList);
@@ -321,6 +322,7 @@ namespace Microsoft.Templates.UI.VisualStudio
             }
         }
 
+     
         public override void CollapseSolutionItems()
         {
             try
@@ -339,33 +341,19 @@ namespace Microsoft.Templates.UI.VisualStudio
             }
         }
 
-        public override Guid GetVsProjectId()
+        public override string GetVsCultureInfo()
         {
-            var project = GetActiveProject();
-            Guid projectGuid = Guid.Empty;
-            try
-            {
-                if (project != null)
-                {
-                    var solution = ServiceProvider.GlobalProvider.GetService(typeof(SVsSolution)) as IVsSolution;
-                    IVsHierarchy hierarchy;
+            return System.Globalization.CultureInfo.GetCultureInfo(Dte.LocaleID).Name;
+        }
 
-                    solution.GetProjectOfUniqueName(project.FullName, out hierarchy);
+        public override string GetVsVersion()
+        {
+            return Dte.Version;
+        }
 
-                    if (hierarchy != null)
-                    {
-                        hierarchy.GetGuidProperty(
-                                    VSConstants.VSITEMID_ROOT,
-                                    (int)__VSHPROPID.VSHPROPID_ProjectIDGuid,
-                                    out projectGuid);
-                    }
-                }
-            }
-            catch
-            {
-                projectGuid = Guid.Empty;
-            }
-            return projectGuid;
+        public override string GetVsEdition()
+        {
+            return Dte.Edition;
         }
 
         private void Collapse(UIHierarchyItem item)
@@ -385,7 +373,7 @@ namespace Microsoft.Templates.UI.VisualStudio
             {
                 try
                 {
-                    // Based on https://technet.microsoft.com/en-us/library/cc766017(v=ws.10).aspx
+                    //Based on https://technet.microsoft.com/en-us/library/cc766017(v=ws.10).aspx 
                     using (var client = new System.Net.WebClient())
                     {
                         var ncsi = client.DownloadString("http://www.msftncsi.com/ncsi.txt");
@@ -399,5 +387,7 @@ namespace Microsoft.Templates.UI.VisualStudio
             }
             return internet;
         }
+
+
     }
 }

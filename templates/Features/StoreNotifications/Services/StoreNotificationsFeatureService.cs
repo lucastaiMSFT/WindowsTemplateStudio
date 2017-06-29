@@ -26,8 +26,6 @@ namespace Param_RootNamespace.Services
 
             // Use the originalArgs variable to access the original arguments
             // that were passed to the app.
-
-            await Task.CompletedTask;
         }
     }
 }

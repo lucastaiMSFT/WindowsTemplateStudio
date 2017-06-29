@@ -35,7 +35,8 @@ namespace Microsoft.Templates.Test.Artifacts
                 {
                     return Path.Combine(Path.GetDirectoryName(GenContext.Current.OutputPath), $"{GenContext.Current.ProjectName}.sln");
                 }
-                return null;
+
+                throw new Exception("Context doesn't exists");
             }
         }
 
@@ -151,9 +152,19 @@ namespace Microsoft.Templates.Test.Artifacts
         {
         }
 
-        public override Guid GetVsProjectId()
+        public override string GetVsCultureInfo()
         {
-            return Guid.Empty;
+            return string.Empty;
+        }
+
+        public override string GetVsVersion()
+        {
+            return string.Empty;
+        }
+
+        public override string GetVsEdition()
+        {
+            return string.Empty;
         }
     }
 }

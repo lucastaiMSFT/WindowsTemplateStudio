@@ -47,7 +47,7 @@ namespace Microsoft.Templates.Core.Locations
                 Version currentVersion = GetVersionFromFolder(currentContentFolder);
                 Version latestVersion = GetVersionFromFolder(LatestContentFolder);
 
-                return currentVersion == null || currentVersion < latestVersion || latestVersion.IsZero();
+                return currentVersion==null || currentVersion < latestVersion || latestVersion.IsZero();
             }
             else
             {
@@ -116,6 +116,7 @@ namespace Microsoft.Templates.Core.Locations
             }
         }
 
+
         public Version GetVersionFromFolder(string contentFolder)
         {
             string versionPart = Path.GetFileName(contentFolder);
@@ -146,7 +147,7 @@ namespace Microsoft.Templates.Core.Locations
 
         private string GetLatestContentFolder(bool ensureWizardAligmnent)
         {
-            var latestVersion = new Version(0, 0, 0, 0);
+            var latestVersion = new Version(0,0,0,0);
             string latestContent = _defaultContentFolder;
 
             if (Directory.Exists(TemplatesFolder))

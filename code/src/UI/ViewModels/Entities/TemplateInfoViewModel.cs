@@ -10,16 +10,16 @@
 // THE CODE OR THE USE OR OTHER DEALINGS IN THE CODE.
 // ******************************************************************
 
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Input;
 
 using Microsoft.TemplateEngine.Abstractions;
 using Microsoft.Templates.Core;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Input;
+using System;
+using System.Windows.Media;
 using Microsoft.Templates.UI.Views;
 using Microsoft.Templates.Core.Mvvm;
 
@@ -54,13 +54,6 @@ namespace Microsoft.Templates.UI.ViewModels
         {
             get => _multipleInstances;
             set => SetProperty(ref _multipleInstances, value);
-        }
-
-        private int _genGroup;
-        public int GenGroup
-        {
-            get => _genGroup;
-            set => SetProperty(ref _genGroup, value);
         }
 
         private string _group;
@@ -145,7 +138,7 @@ namespace Microsoft.Templates.UI.ViewModels
                 SetProperty(ref _newTemplateName, value);
                 if (CanChooseItemName)
                 {
-                    _validateTemplateName?.Invoke(this);
+                    ValidateTemplateName?.Invoke(this);
                 }
             }
         }
@@ -173,8 +166,8 @@ namespace Microsoft.Templates.UI.ViewModels
         private ICommand _showItemInfoCommand;
         public ICommand ShowItemInfoCommand => _showItemInfoCommand ?? (_showItemInfoCommand = new RelayCommand(ShowItemInfo));
 
-        private Action<TemplateInfoViewModel> _validateTemplateName;
-        #endregion
+        private Action<TemplateInfoViewModel> ValidateTemplateName;
+        #endregion        
 
         public TemplateInfoViewModel(ITemplateInfo template, IEnumerable<ITemplateInfo> dependencies, RelayCommand<TemplateInfoViewModel> addItemCommand, RelayCommand<TemplateInfoViewModel> saveItemCommand, Action<TemplateInfoViewModel> validateTemplateName)
         {
@@ -185,7 +178,6 @@ namespace Microsoft.Templates.UI.ViewModels
             Icon = template.GetIcon();
             LicenseTerms = template.GetLicenses();
             MultipleInstances = template.GetMultipleInstance();
-            GenGroup = template.GetGenGroup();
             Name = template.Name;
             Order = template.GetOrder();
             Summary = template.Description;
@@ -195,7 +187,7 @@ namespace Microsoft.Templates.UI.ViewModels
 
             AddItemCommand = addItemCommand;
             SaveItemCommand = saveItemCommand;
-            _validateTemplateName = validateTemplateName;
+            ValidateTemplateName = validateTemplateName;
 
             if (dependencies != null && dependencies.Any())
             {

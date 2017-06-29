@@ -41,9 +41,7 @@ namespace Microsoft.Templates.Core.PostActions.Catalog.SortUsings
                                 .Skip(startUsingIndex)
                                 .Take(usingsLinesCount)
                                 .Where(u => !string.IsNullOrWhiteSpace(u))
-#pragma warning disable SA1008 // Opening parenthesis must be spaced correctly - StyleCop can't handle Tuples
                                 .Select(u => (UsingComparer.ExtractNs(u), u))
-#pragma warning restore SA1008 // Opening parenthesis must be spaced correctly
                                 .GroupBy(s => ExtractRootNs(s.Item1), s => s.Item2)
                                 .ToList();
 
@@ -93,7 +91,7 @@ namespace Microsoft.Templates.Core.PostActions.Catalog.SortUsings
             {
                 if (!expression(skipContent[i]))
                 {
-                    return i + startIndex;
+                    return i;
                 }
             }
 

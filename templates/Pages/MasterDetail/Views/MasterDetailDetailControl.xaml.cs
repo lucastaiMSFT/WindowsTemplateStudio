@@ -7,13 +7,13 @@ namespace Param_ItemNamespace.Views
 {
     public sealed partial class MasterDetailDetailControl : UserControl
     {
-        public Order MasterMenuItem
+        public SampleModel MasterMenuItem
         {
-            get { return GetValue(MasterMenuItemProperty) as Order; }
+            get { return GetValue(MasterMenuItemProperty) as SampleModel; }
             set { SetValue(MasterMenuItemProperty, value); }
         }
 
-        public static DependencyProperty MasterMenuItemProperty = DependencyProperty.Register("MasterMenuItem",typeof(Order),typeof(MasterDetailDetailControl),new PropertyMetadata(null));
+        public static DependencyProperty MasterMenuItemProperty = DependencyProperty.Register("MasterMenuItem",typeof(SampleModel),typeof(MasterDetailDetailControl),new PropertyMetadata(null));
 
         public MasterDetailDetailControl()
         {
